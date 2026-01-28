@@ -27,4 +27,22 @@ app.post('/api/items', async (req, res) => {
     res.json(newItem);
 });
 
+// Редактирование (Update)
+app.put('/api/items/:id', async (req, res) => {
+    await connectToDatabase();
+    const updatedItem = await Item.findByIdAndUpdate(
+        req.params.id,
+        { name: req.body.name },
+        { new: true } // Вернуть обновленный объект
+    );
+    res.json(updatedItem);
+});
+
+// Удаление (Delete)
+app.delete('/api/items/:id', async (req, res) => {
+    await connectToDatabase();
+    await Item.findByIdAndDelete(req.params.id);
+    res.json({ message: "Удалено" });
+});
+
 module.exports = app;
